@@ -366,7 +366,8 @@ public class FormMain extends javax.swing.JFrame {
         // TODO add your handling code here
         Grafo g = ((JPanelGrafo) jPanel3).getGrafo();
         ArvoreGeradoraMinima agm = new ArvoreGeradoraMinima(g);
-        int matriz[][] = agm.getMatriz();
+        g = agm.getArvoreGeradoraMinima();
+        int matriz[][] = agm.getMatriz();        
         String out = "";
         for (int i = 0; i < agm.getTamanho(); i++){
             for (int j = 0; j < agm.getTamanho(); j++){
@@ -376,6 +377,12 @@ public class FormMain extends javax.swing.JFrame {
         }
         this.jTextArea2.setText("");
         this.jTextArea2.setText(out);
+        out = "";        
+        g = agm.getArvoreGeradoraMinima();
+        for (Ligacao l : g.getLigacoes()) {
+            out += l.getOrigem().getId() + "->" + l.getDestino().getId() + " = " + l.getValue() + "\n";
+        }
+        this.jTextArea2.setText(this.jTextArea2.getText() + "\n\n" + out);        
     }//GEN-LAST:event_jButton7ActionPerformed
 
     /**
