@@ -25,12 +25,7 @@ public class ArvoreGeradoraMinima {
     }
 
     public int[][] getMatriz() {
-        //aqui eu zero a matriz para utilizar somente o que está abaixo da diagonal principal.
-        for (int i = 0; i < this.tamanho; i++) {
-            for (int j = i; j < this.tamanho; j++) {
-                this.matriz[i][j] = 0;
-            }
-        }
+        //aqui eu zero a matriz para utilizar somente o que está abaixo da diagonal principal.        
         return this.matriz;
     }
 
@@ -62,14 +57,11 @@ public class ArvoreGeradoraMinima {
 
             // adiciono o valor no conjunto da árvore
             mstSet[u] = true;
-
-            // Update key value and parent index of the adjacent vertices of
-            // the picked vertex. Consider only those vertices which are not yet
-            // included in MST
+            
             for (int v = 0; v < this.tamanho; v++) 
             // graph[u][v] is non zero only for adjacent vertices of m
-            // mstSet[v] is false for vertices not yet included in MST
-            // Update the key only if graph[u][v] is smaller than key[v]
+            // mstSet[v] é falso para vértices não inclusos na AGM.
+            // Atualiza a chave somente se graph[u][v] for menor que key[v]
             {
                 if ( this.matriz[u][v] != 0 && mstSet[v] == false && this.matriz[u][v] < key[v]) {
                     parent[v] = u;
@@ -78,7 +70,7 @@ public class ArvoreGeradoraMinima {
             }
         }
         
-        boolean primeiro = true;
+        //boolean primeiro = true;
         for (int i = 1; i < parent.length; i++){
             if (g.getVerticeById(String.valueOf(alfabeto.charAt(parent[i]))) == null){
                 g.addVertice(new Vertice(String.valueOf(alfabeto.charAt(parent[i]))));
