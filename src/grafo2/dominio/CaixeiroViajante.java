@@ -22,4 +22,8 @@ public class CaixeiroViajante {
             this.matriz[idOrigem][idDestino] = l.getValue();
         }
     }
+    
+    public void tracaRota(){
+        
+    }
 }
