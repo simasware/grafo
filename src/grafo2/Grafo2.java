@@ -4,7 +4,10 @@
  */
 package grafo2;
 
+import grafo2.dominio.CaixeiroViajante;
+import grafo2.dominio.Grafo;
 import grafo2.dominio.Main;
+import grafo2.dominio.NearestNeighbor;
 import grafo2.dominio.ProdutoMatricial;
 import javax.swing.UIManager;
 
@@ -19,7 +22,14 @@ public class Grafo2 {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        try {
+        CaixeiroViajante c = new CaixeiroViajante(new Grafo(true));
+        NearestNeighbor n = new NearestNeighbor(c.getMatriz(), 2);
+        int[] r = n.getPath();
+        for (int i = 0; i < r.length; i++){
+            System.out.println(r[i]);
+        }
+        
+        /*try {
             UIManager.setLookAndFeel(
             UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException ex) {
@@ -32,7 +42,7 @@ public class Grafo2 {
             java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         FormMain m = new FormMain();
-        m.setVisible(true);
+        m.setVisible(true);*/
         
     }
 }

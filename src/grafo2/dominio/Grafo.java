@@ -377,7 +377,7 @@ public class Grafo {
         return result;
     }
 
-    public List<Ligacao> getMelhorRota(Vertice ori, Vertice des) {
+    public List<Ligacao> getMelhorRota(Vertice ori) {
         /*List<Ligacao> result = new ArrayList<>();
         List<Vertice> testados = new ArrayList<>();
         Vertice aux = ori;
@@ -387,6 +387,12 @@ public class Grafo {
         }
         
         return result;*/
+        List<Ligacao> result = new ArrayList<>();
+        List<Vertice> testados = new ArrayList<>();
+        testados.add(ori);
+        for (Ligacao vLig: getLigacoes()){
+            
+        }
         return null;
     }    
 }
