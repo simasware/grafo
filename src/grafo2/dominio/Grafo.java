@@ -3,6 +3,7 @@ package grafo2.dominio;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class Grafo {
 
@@ -377,22 +378,16 @@ public class Grafo {
         return result;
     }
 
-    public List<Ligacao> getMelhorRota(Vertice ori) {
-        /*List<Ligacao> result = new ArrayList<>();
-        List<Vertice> testados = new ArrayList<>();
-        Vertice aux = ori;
-        
-        for (Ligacao vLig : getLigacoes()) {
-            if (vLig)
-        }
-        
-        return result;*/
-        List<Ligacao> result = new ArrayList<>();
+    public List<Ligacao> getMelhorRota(Vertice ori) {      
+        /*Stack s = new Stack();
         List<Vertice> testados = new ArrayList<>();
         testados.add(ori);
-        for (Ligacao vLig: getLigacoes()){
+        s.push(ori.getId());
+        List<Ligacao> l = getLigacoesVertice(ori, true);
+        while (l.iterator().hasNext()){
             
-        }
+        }*/
+        
         return null;
     }    
 }

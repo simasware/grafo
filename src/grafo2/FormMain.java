@@ -5,6 +5,7 @@
 package grafo2;
 
 import grafo2.dominio.ArvoreGeradoraMinima;
+import grafo2.dominio.CaixeiroViajante;
 import grafo2.dominio.Grafo;
 import grafo2.dominio.JPanelGrafo;
 import grafo2.dominio.Ligacao;
@@ -19,7 +20,7 @@ import javax.swing.table.TableModel;
  * @author simasware
  */
 public class FormMain extends javax.swing.JFrame {
-
+    private final String alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     /**
      * Creates new form FormMain
      */
@@ -59,8 +60,10 @@ public class FormMain extends javax.swing.JFrame {
         jTextArea2 = new javax.swing.JTextArea();
         jButton7 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
         jButton8 = new javax.swing.JButton();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
+        jButton9 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -261,35 +264,52 @@ public class FormMain extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Matriz de Adjacência", jPanel2);
 
-        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel5.setForeground(new java.awt.Color(1, 1, 1));
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 521, Short.MAX_VALUE)
-        );
-
         jButton8.setText("Encontrar melhor  rota");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane4.setViewportView(jTable2);
+
+        jButton9.setText("Criar nova tabela");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, 658, Short.MAX_VALUE)
+            .addComponent(jScrollPane4)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 521, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton8)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton8)
+                    .addComponent(jButton9))
                 .addContainerGap())
         );
 
@@ -404,23 +424,47 @@ public class FormMain extends javax.swing.JFrame {
         Grafo g = ((JPanelGrafo) jPanel3).getGrafo();
         ArvoreGeradoraMinima agm = new ArvoreGeradoraMinima(g);
         g = agm.getArvoreGeradoraMinima();
-        int matriz[][] = agm.getMatriz();        
+        int matriz[][] = agm.getMatriz();
         String out = "";
-        for (int i = 0; i < agm.getTamanho(); i++){
-            for (int j = 0; j < agm.getTamanho(); j++){
+        for (int i = 0; i < agm.getTamanho(); i++) {
+            for (int j = 0; j < agm.getTamanho(); j++) {
                 out += matriz[i][j] + "\t";
             }
             out += "\n";
         }
         this.jTextArea2.setText("");
         this.jTextArea2.setText(out);
-        out = "";        
+        out = "";
         g = agm.getArvoreGeradoraMinima();
         for (Ligacao l : g.getLigacoes()) {
             out += l.getOrigem().getId() + "->" + l.getDestino().getId() + " = " + l.getValue() + "\n";
         }
-        this.jTextArea2.setText(this.jTextArea2.getText() + "\n\n" + out);        
+        this.jTextArea2.setText(this.jTextArea2.getText() + "\n\n" + out);
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+        Grafo g = ((JPanelGrafo) jPanel3).getGrafo();
+        CaixeiroViajante tsp = new CaixeiroViajante(g);
+        String inicial = JOptionPane.showInputDialog(null, "Digite o vértice inicial para traçar a rota.");
+        tsp.tracaRota(g.getVerticeById(inicial));
+        JOptionPane.showMessageDialog(null, tsp.getMin(0));
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        // TODO add your handling code here:
+        int numCidades = Integer.parseInt(JOptionPane.showInputDialog(null, "Informe o número de cidades."));
+        Object[] cidades = new Object[numCidades+1];
+        cidades[0] = "Cidade";
+        for (int i = 0; i < numCidades; i++){
+            cidades[i] = "Cidade " + String.valueOf(this.alfabeto.charAt(i));
+        }
+        TableModel m = new DefaultTableModel(cidades, numCidades);
+        this.jTable2.setModel(m);
+        for (int i = 0; i < numCidades; i++){
+            this.jTable2.getModel().setValueAt("Cidade " + String.valueOf(this.alfabeto.charAt(i)), i, 0);
+        };
+    }//GEN-LAST:event_jButton9ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -468,18 +512,20 @@ public class FormMain extends javax.swing.JFrame {
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
     // End of variables declaration//GEN-END:variables

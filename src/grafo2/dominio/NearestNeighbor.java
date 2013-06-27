@@ -10,12 +10,16 @@ package grafo2.dominio;
  */
 public class NearestNeighbor {
 
-    private int[] path;    
-   
+    private int[] path;
+
     public NearestNeighbor(final int[][] distanceMatrix, final int startCity) {
 
         path = new int[distanceMatrix[0].length];
 
+        for (int i = 0; i < path.length; i ++){
+            path[i] = Integer.MAX_VALUE;
+        }
+        
         path[0] = startCity;
         int currentCity = startCity;
 
@@ -36,7 +40,7 @@ public class NearestNeighbor {
             }
         }
     }
-    
+
     private int findMin(int[] row) {
 
         int nextCity = -1;

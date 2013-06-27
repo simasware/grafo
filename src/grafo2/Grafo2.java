@@ -21,15 +21,8 @@ public class Grafo2 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
-        CaixeiroViajante c = new CaixeiroViajante(new Grafo(true));
-        NearestNeighbor n = new NearestNeighbor(c.getMatriz(), 2);
-        int[] r = n.getPath();
-        for (int i = 0; i < r.length; i++){
-            System.out.println(r[i]);
-        }
-        
-        /*try {
+        // TODO code application logic here            
+        try {
             UIManager.setLookAndFeel(
             UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException ex) {
@@ -42,7 +35,7 @@ public class Grafo2 {
             java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         FormMain m = new FormMain();
-        m.setVisible(true);*/
+        m.setVisible(true);
         
     }
 }
