@@ -10,7 +10,10 @@ import grafo2.dominio.Grafo;
 import grafo2.dominio.JPanelGrafo;
 import grafo2.dominio.Ligacao;
 import grafo2.dominio.TabelaLigacoes;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JOptionPane;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
@@ -20,7 +23,9 @@ import javax.swing.table.TableModel;
  * @author simasware
  */
 public class FormMain extends javax.swing.JFrame {
+
     private final String alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
     /**
      * Creates new form FormMain
      */
@@ -64,6 +69,8 @@ public class FormMain extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         jButton9 = new javax.swing.JButton();
+        jTextField1 = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -165,7 +172,7 @@ public class FormMain extends javax.swing.JFrame {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 566, Short.MAX_VALUE)
+            .addGap(0, 576, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout Tab3Layout = new javax.swing.GroupLayout(Tab3);
@@ -194,7 +201,7 @@ public class FormMain extends javax.swing.JFrame {
         );
         Tab1Layout.setVerticalGroup(
             Tab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 566, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 576, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Ajuda", Tab1);
@@ -227,7 +234,7 @@ public class FormMain extends javax.swing.JFrame {
         Tab2Layout.setVerticalGroup(
             Tab2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Tab2Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 521, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton6)
                 .addContainerGap())
@@ -256,7 +263,7 @@ public class FormMain extends javax.swing.JFrame {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 521, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton7)
                 .addContainerGap())
@@ -281,8 +288,19 @@ public class FormMain extends javax.swing.JFrame {
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, true, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTable2.setColumnSelectionAllowed(true);
         jScrollPane4.setViewportView(jTable2);
+        jTable2.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jTable2.getColumnModel().getColumn(0).setResizable(false);
 
         jButton9.setText("Criar nova tabela");
         jButton9.addActionListener(new java.awt.event.ActionListener() {
@@ -290,6 +308,14 @@ public class FormMain extends javax.swing.JFrame {
                 jButton9ActionPerformed(evt);
             }
         });
+
+        jTextField1.setEditable(false);
+        jTextField1.setFont(new java.awt.Font("Droid Sans", 0, 24)); // NOI18N
+        jTextField1.setText("ROTA");
+
+        jLabel1.setFont(new java.awt.Font("Droid Sans", 1, 14)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("Melhor rota");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -301,11 +327,17 @@ public class FormMain extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
+            .addComponent(jTextField1)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 521, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton8)
@@ -444,25 +476,47 @@ public class FormMain extends javax.swing.JFrame {
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
-        Grafo g = ((JPanelGrafo) jPanel3).getGrafo();
-        CaixeiroViajante tsp = new CaixeiroViajante(g);
+        int tamanho = jTable2.getModel().getColumnCount() - 1;
+        int[][] matriz = new int[tamanho][tamanho];
+        for (int i = 0; i < tamanho; i++) {
+            for (int j = 0; j < tamanho; j++) {
+                Object value = this.jTable2.getModel().getValueAt(i, j+1);
+                matriz[i][j] = Integer.parseInt((String) value);
+            }
+        };        
+                
+        CaixeiroViajante tsp = new CaixeiroViajante(tamanho, matriz);
         String inicial = JOptionPane.showInputDialog(null, "Digite o vértice inicial para traçar a rota.");
-        tsp.tracaRota(g.getVerticeById(inicial));
-        JOptionPane.showMessageDialog(null, tsp.getMin(0));
+        tsp.tracaRota(alfabeto.indexOf(inicial.toUpperCase()));
+        int[] caminho = tsp.getCaminho();
+        jTextField1.setText("");
+        for (int i = 0; i < caminho.length; i++) {
+            jTextField1.setText(jTextField1.getText() + alfabeto.charAt(caminho[i]) + " -> ");
+        }
+        jTextField1.setText(jTextField1.getText() + inicial);
+        tsp = null;
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         // TODO add your handling code here:
         int numCidades = Integer.parseInt(JOptionPane.showInputDialog(null, "Informe o número de cidades."));
-        Object[] cidades = new Object[numCidades+1];
+        Object[] cidades = new Object[numCidades + 1];
         cidades[0] = "Cidade";
-        for (int i = 0; i < numCidades; i++){
-            cidades[i] = "Cidade " + String.valueOf(this.alfabeto.charAt(i));
+        for (int i = 0; i < numCidades; i++) {
+            cidades[i + 1] = "Cidade " + String.valueOf(this.alfabeto.charAt(i));
         }
         TableModel m = new DefaultTableModel(cidades, numCidades);
         this.jTable2.setModel(m);
-        for (int i = 0; i < numCidades; i++){
+        for (int i = 0; i < numCidades; i++) {
             this.jTable2.getModel().setValueAt("Cidade " + String.valueOf(this.alfabeto.charAt(i)), i, 0);
+        };
+        //aqui preencho a diagonal principal.
+        for (int i = 0; i < this.jTable2.getModel().getColumnCount(); i++) {
+            for (int j = 0; j < this.jTable2.getModel().getRowCount(); j++) {
+                if (i == j) {
+                    this.jTable2.getModel().setValueAt("0", i, j + 1);
+                }
+            }
         };
     }//GEN-LAST:event_jButton9ActionPerformed
 
@@ -515,6 +569,7 @@ public class FormMain extends javax.swing.JFrame {
     private javax.swing.JButton jButton9;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox2;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -528,5 +583,6 @@ public class FormMain extends javax.swing.JFrame {
     private javax.swing.JTable jTable2;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
+    private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
 }

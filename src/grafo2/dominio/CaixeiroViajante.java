@@ -17,6 +17,7 @@ public class CaixeiroViajante {
 
     private int[][] matriz;
     private int tamanho;
+    private int[] caminho;
     private final String alfabeto = "ABCDEFGHIJKLMONPQRSTUVWXYZ";
 
     public CaixeiroViajante(Grafo g) {
@@ -28,51 +29,40 @@ public class CaixeiroViajante {
             this.matriz[idOrigem][idDestino] = l.getValue();
         }
     }
+    
+    public CaixeiroViajante(int tamanho, int matriz[][]){
+        this.tamanho = tamanho;
+        this.matriz  = matriz;        
+    }
 
     public int[][] getMatriz() {
         return this.matriz;
     }
 
+    public void tracaRota(int inicial){
+        NearestNeighbor n = new NearestNeighbor(matriz, inicial);
+        this.caminho = n.getPath();        
+    }
+    
     public void tracaRota(Vertice inicial) {
         NearestNeighbor n = new NearestNeighbor(matriz, alfabeto.indexOf(inicial.getId()));
-        int[] caminho = n.getPath();
-        for (int i = 0; i < caminho.length; i++){
-            System.out.print( alfabeto.charAt(caminho[i]) + "->" );
-        }
-        /*Stack s = new Stack();
-        int[] caminho = new int[tamanho];
-        int i = 0;
-        List<Vertice> visitados = new ArrayList<>();
-        int index = getMin(alfabeto.indexOf(inicial.getId()));
-        visitados.add(inicial);
-        s.push(index);
-
-        //enquanto todos os vértices não forem visitados...
-        while (i < this.tamanho){
-            index = getMin(index);
-            if ( !isVerticeVisitada(index, caminho)){
-                caminho[i] = index;
-                i++;
-            }            
-        }
-        
-        for (int j = 0; j < caminho.length; j++){
-            System.out.print( alfabeto.charAt(j) + "->" );
-        }*/
+        this.caminho = n.getPath();        
     }    
 
-    public boolean isVerticeVisitada(int vertice, int[] visitados){
-        
+    public int[] getCaminho(){
+        return this.caminho;
+    }
+    
+    private boolean isVerticeVisitada(int vertice, int[] visitados){       
         for (int i = 0; i < visitados.length; i++){
             if (visitados[i] == vertice){
                 return true;
             }
-        }
-        
+        }        
         return false;
     }
     
-    public int getMin(int vertice) {
+    private int getMin(int vertice) {
         int aux = Integer.MAX_VALUE;
         int indice = -1;
         for (int i = 0; i < tamanho; i++) {
