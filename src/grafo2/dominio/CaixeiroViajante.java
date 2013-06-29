@@ -51,28 +51,5 @@ public class CaixeiroViajante {
 
     public int[] getCaminho(){
         return this.caminho;
-    }
-    
-    private boolean isVerticeVisitada(int vertice, int[] visitados){       
-        for (int i = 0; i < visitados.length; i++){
-            if (visitados[i] == vertice){
-                return true;
-            }
-        }        
-        return false;
-    }
-    
-    private int getMin(int vertice) {
-        int aux = Integer.MAX_VALUE;
-        int indice = -1;
-        for (int i = 0; i < tamanho; i++) {
-            //System.out.printf("matriz[%d][%d] - aux[%d]\n", vertice, i, aux);
-            if (this.matriz[vertice][i] > 0 && this.matriz[vertice][i] < aux) {
-                aux = this.matriz[vertice][i];
-                indice = i;
-            }
-        }
-
-        return indice;
-    }
+    }          
 }

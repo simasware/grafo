@@ -4,11 +4,7 @@
  */
 package grafo2;
 
-import grafo2.dominio.CaixeiroViajante;
-import grafo2.dominio.Grafo;
 import grafo2.dominio.Main;
-import grafo2.dominio.NearestNeighbor;
-import grafo2.dominio.ProdutoMatricial;
 import javax.swing.UIManager;
 
 /**

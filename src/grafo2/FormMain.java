@@ -10,12 +10,8 @@ import grafo2.dominio.Grafo;
 import grafo2.dominio.JPanelGrafo;
 import grafo2.dominio.Ligacao;
 import grafo2.dominio.TabelaLigacoes;
-import javax.swing.DefaultCellEditor;
 import javax.swing.JOptionPane;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 
 /**
