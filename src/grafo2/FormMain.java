@@ -10,6 +10,8 @@ import grafo2.dominio.Grafo;
 import grafo2.dominio.JPanelGrafo;
 import grafo2.dominio.Ligacao;
 import grafo2.dominio.TabelaLigacoes;
+import grafo2.dominio.Vertice;
+import java.util.Random;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -21,6 +23,13 @@ import javax.swing.table.TableModel;
 public class FormMain extends javax.swing.JFrame {
 
     private final String alfabeto = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private int[] explorado;
+    private int[] ciclo;
+    private int[] melhorCiclo;
+    private int nivel;
+    private int min;
+    int[][] matriz;
+    int numVertices;
 
     /**
      * Creates new form FormMain
@@ -67,6 +76,7 @@ public class FormMain extends javax.swing.JFrame {
         jButton9 = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        jButton10 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -164,11 +174,11 @@ public class FormMain extends javax.swing.JFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 658, Short.MAX_VALUE)
+            .addGap(0, 657, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 576, Short.MAX_VALUE)
+            .addGap(0, 582, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout Tab3Layout = new javax.swing.GroupLayout(Tab3);
@@ -193,11 +203,11 @@ public class FormMain extends javax.swing.JFrame {
         Tab1.setLayout(Tab1Layout);
         Tab1Layout.setHorizontalGroup(
             Tab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 658, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)
         );
         Tab1Layout.setVerticalGroup(
             Tab1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 576, Short.MAX_VALUE)
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 582, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Ajuda", Tab1);
@@ -224,13 +234,13 @@ public class FormMain extends javax.swing.JFrame {
         Tab2.setLayout(Tab2Layout);
         Tab2Layout.setHorizontalGroup(
             Tab2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, 744, Short.MAX_VALUE)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 658, Short.MAX_VALUE)
+            .addComponent(jButton6, javax.swing.GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)
         );
         Tab2Layout.setVerticalGroup(
             Tab2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Tab2Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 542, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton6)
                 .addContainerGap())
@@ -253,13 +263,13 @@ public class FormMain extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 658, Short.MAX_VALUE)
-            .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)
+            .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, 657, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 531, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 542, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton7)
                 .addContainerGap())
@@ -267,7 +277,7 @@ public class FormMain extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Matriz de Adjacência", jPanel2);
 
-        jButton8.setText("Encontrar melhor  rota");
+        jButton8.setText("ADJ Mais Proximo");
         jButton8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton8ActionPerformed(evt);
@@ -306,25 +316,34 @@ public class FormMain extends javax.swing.JFrame {
         });
 
         jTextField1.setEditable(false);
-        jTextField1.setFont(new java.awt.Font("Droid Sans", 0, 24)); // NOI18N
+        jTextField1.setFont(new java.awt.Font("Droid Sans", 0, 24));
         jTextField1.setText("ROTA");
 
-        jLabel1.setFont(new java.awt.Font("Droid Sans", 1, 14)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Droid Sans", 1, 14));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Melhor rota");
+
+        jButton10.setText("BrutForce");
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane4)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+            .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 671, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
-            .addComponent(jTextField1)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 671, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 671, Short.MAX_VALUE)
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -337,7 +356,8 @@ public class FormMain extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton8)
-                    .addComponent(jButton9))
+                    .addComponent(jButton9)
+                    .addComponent(jButton10))
                 .addContainerGap())
         );
 
@@ -470,17 +490,85 @@ public class FormMain extends javax.swing.JFrame {
         this.jTextArea2.setText(this.jTextArea2.getText() + "\n\n" + out);
     }//GEN-LAST:event_jButton7ActionPerformed
 
+    private void BrutForce() {
+
+        numVertices = jTable2.getModel().getColumnCount() - 1;
+        matriz = new int[numVertices][numVertices];
+        for (int i = 0; i < numVertices; i++) {
+            for (int j = 0; j < numVertices; j++) {
+                Object value = this.jTable2.getModel().getValueAt(i, j + 1);
+                matriz[i][j] = Integer.parseInt((String) value);
+            }
+        };
+
+        explorado = new int[numVertices];
+        ciclo = new int[numVertices];
+        melhorCiclo = new int[numVertices];
+
+        for (int i = 0; i < numVertices; i++) {
+            explorado[i] = 0;
+        }
+
+        nivel = 0;    
+        min = 1000000;
+
+        dfsPCV(0, 0);
+
+        jTextField1.setText("");
+
+        for (int i = 0; i < numVertices; i++) {
+            jTextField1.setText(jTextField1.getText() + alfabeto.charAt(melhorCiclo[i]) + " -> ");//
+        }
+        jTextField1.setText(jTextField1.getText() + alfabeto.charAt(melhorCiclo[0]));
+    }
+
+    private void dfsPCV(int v, int nivel) {
+
+        int i, j, dist;
+        explorado[v] = 1;
+        ciclo[nivel] = v;
+        if (nivel == (numVertices - 1)) {
+            /* completou um ciclo */
+            dist = medeciclo(ciclo);
+            if (dist < min) {
+                min = dist;
+                for (j = 0; j < numVertices; j++) {
+                    melhorCiclo[j] = ciclo[j];
+                }
+            }
+        }
+        for (i = 0; i < numVertices; i++) {
+            if (explorado[i] != 1) {
+                dfsPCV(i, nivel + 1);
+                explorado[i] = 0;
+            }
+        }
+    }
+
+    private int medeciclo(int[] t) {
+
+        int i;
+        int l = 0;
+
+        for (i = 0; i < numVertices - 1; i++) {
+            l = l + matriz[t[i]][t[i + 1]];
+        }
+        l = l + matriz[t[numVertices - 1]][t[0]];
+
+        return l;
+    }
+
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        // TODO add your handling code here:
+
         int tamanho = jTable2.getModel().getColumnCount() - 1;
         int[][] matriz = new int[tamanho][tamanho];
         for (int i = 0; i < tamanho; i++) {
             for (int j = 0; j < tamanho; j++) {
-                Object value = this.jTable2.getModel().getValueAt(i, j+1);
+                Object value = this.jTable2.getModel().getValueAt(i, j + 1);
                 matriz[i][j] = Integer.parseInt((String) value);
             }
-        };        
-                
+        };
+
         CaixeiroViajante tsp = new CaixeiroViajante(tamanho, matriz);
         String inicial = JOptionPane.showInputDialog(null, "Digite o vértice inicial para traçar a rota.");
         tsp.tracaRota(alfabeto.indexOf(inicial.toUpperCase()));
@@ -490,7 +578,34 @@ public class FormMain extends javax.swing.JFrame {
             jTextField1.setText(jTextField1.getText() + alfabeto.charAt(caminho[i]) + " -> ");
         }
         jTextField1.setText(jTextField1.getText() + inicial);
-        tsp = null;
+        tsp = null;        
+        ((JPanelGrafo) jPanel3).setDefinirValoresLigacoes(true);        
+        for (int i = 0; i < caminho.length; i++){
+            int posx, posy;
+            posx = (int) (Math.random() * ( jPanel3.getWidth() - 1 ));
+            if (posx <= 0){
+                posx = 1;
+            }            
+            posy = (int) (Math.random() * ( posx - 1 ));
+            if (posy <= 0){
+                posx = 1;
+            }
+            Vertice c = new Vertice(String.valueOf(alfabeto.charAt(caminho[i])));
+            c.setPosX(posx);
+            c.setPosY(posy);
+            ((JPanelGrafo) jPanel3).getGrafo().addVertice(c);
+        }
+        ((JPanelGrafo) jPanel3).setExibirMelhoRota(true);
+        for (int i = 0; i < tamanho; i++){
+            for (int j = 0; j < tamanho; j++){
+                Vertice orig = ((JPanelGrafo) jPanel3).getGrafo().getVerticeById(String.valueOf(alfabeto.charAt(i)));
+                Vertice dest = ((JPanelGrafo) jPanel3).getGrafo().getVerticeById(String.valueOf(alfabeto.charAt(j)));
+                if (orig != null && dest != null){
+                    ((JPanelGrafo) jPanel3).getGrafo().addLigacao(orig, dest, matriz[i][j]);
+                }
+                
+            }
+        }
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
@@ -515,6 +630,10 @@ public class FormMain extends javax.swing.JFrame {
             }
         };
     }//GEN-LAST:event_jButton9ActionPerformed
+
+private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+    BrutForce();
+}//GEN-LAST:event_jButton10ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -545,6 +664,7 @@ public class FormMain extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+
             public void run() {
                 new FormMain().setVisible(true);
             }
@@ -555,6 +675,7 @@ public class FormMain extends javax.swing.JFrame {
     private javax.swing.JPanel Tab2;
     private javax.swing.JPanel Tab3;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
